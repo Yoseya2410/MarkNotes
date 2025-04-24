@@ -1,4 +1,4 @@
-# Markdown 示例
+# 欢迎使用 MarkNotes
 
 这是一个展示Markdown功能的示例文件。
 
