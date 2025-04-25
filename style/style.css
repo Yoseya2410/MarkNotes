@@ -12,7 +12,7 @@
   --table-even-row-color: #fafafa;
 }
 
-/* 深色模式*/
+/* 深色模式 */
 @media (prefers-color-scheme: dark) {
   :root {
     --primary-color: #0066cc;
@@ -151,13 +151,13 @@ img {
   display: block;
 }
 
-/* 目录按钮样式 */
+/* 目录按钮 */
 #toc-button {
   position: fixed;
   right: 20px;
   top: 20px;
-  width: 40px; /* 设置按钮宽度 */
-  height: 40px; /* 设置按钮高度 */
+  width: 40px;
+  height: 40px;
   background: var(--background-color);
   color: var(--text-color);
   border: none;
@@ -165,12 +165,12 @@ img {
   cursor: pointer;
   z-index: 100;
   box-shadow: 0 1px 5px var(--shadow-color);
-  display: flex; /* 使用flex布局 */
+  display: flex;
   justify-content: center; /* 水平居中 */
-  align-items: center; /* 垂直居中 */
+  align-items: center;
 }
 
-/* 目录弹窗容器 - 默认隐藏 */
+/* 目录弹窗*/
 #toc-modal {
   display: none;
   position: fixed;
@@ -179,35 +179,42 @@ img {
   right: 0;
   bottom: 0;
   background: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(10px);
   z-index: 1000;
   justify-content: center;
   align-items: center;
 }
 
-/* 目录内容区域 */
+/* 目录内容 */
 #toc-container {
   width: 90%;
   max-width: 600px;
   max-height: 70vh;
   background: var(--background-color);
   border-radius: 15px;
-  padding: 0; /* 移除内边距，由内部元素控制 */
+  padding: 0;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
   overflow-y: auto;
+  overscroll-behavior-y: contain;
+  scrollbar-width: none;
+}
+
+#toc-container::-webkit-scrollbar {
+  display: none;
 }
 
 /* 弹窗标题和关闭按钮 */
 #toc-header {
-  position: sticky; /* 固定在顶部 */
-  top: 0; /* 距离顶部为0 */
+  position: sticky;
+  top: 0;
   display: flex;
   justify-content: space-between;
   align-items: center;
   margin-bottom: 20px;
-  padding: 20px; /* 添加内边距 */
-  background: var(--background-color); /* 背景色与弹窗一致 */
+  padding: 20px;
+  background: var(--background-color);
   border-bottom: 2px solid var(--contrast-color);
-  z-index: 1; /* 确保标题在滚动时覆盖内容 */
+  z-index: 1;
 }
 
 #toc-title {
@@ -219,13 +226,13 @@ img {
 #close-toc {
   background: none;
   border: none;
-  font-size: 1.5em;
+  font-size: 2em;
   cursor: pointer;
   color: var(--text-color);
   padding: 5px;
 }
 
-/* 目录列表样式 */
+/* 目录列表 */
 #toc {
   list-style: none;
   padding-left: 0;
@@ -250,10 +257,12 @@ img {
   font-weight: 600;
   font-size: 1.1em;
 }
+
 .toc-h2 {
   padding-left: 20px;
   font-size: 1em;
 }
+
 .toc-h3 {
   padding-left: 40px;
   font-size: 0.95em;
@@ -264,15 +273,4 @@ img {
   font-weight: 600;
   background: var(--selected-color);
   border-left: 3px solid var(--primary-color);
-}
-
-
-/* 隐藏滚动条但仍允许滚动 */
-#toc-container {
-  overflow-y: scroll; /* 允许垂直滚动 */
-  scrollbar-width: none;
-}
-
-#toc-container::-webkit-scrollbar {
-  display: none; /* 隐藏滚动条 */
 }

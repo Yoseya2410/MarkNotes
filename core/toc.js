@@ -1,6 +1,5 @@
 // 动态生成目录按钮和弹窗
 function createTocElements() {
-    // 创建目录按钮（SVG图标）
     const tocButton = document.createElement('button');
     tocButton.id = 'toc-button';
     tocButton.innerHTML = `
