@@ -101,7 +101,7 @@ pre {
 }
 
 code {
-  font-family: "Menlo", "Courier New", Courier, monospace;
+  font-family: "Consolas", 'Courier New', "monospace";
   background-color: var(--contrast-color);
   color: var(--text-color);
   padding: 2px 4px;
@@ -276,4 +276,39 @@ img {
   font-weight: 600;
   background: var(--selected-color);
   border-left: 3px solid var(--primary-color);
+}
+
+.mermaid {
+  overflow: visible;
+  -webkit-tap-highlight-color: transparent;
+}
+.mermaid {
+  display: flex;
+  justify-content: center;
+  overflow: visible;
+  touch-action: none;
+  -webkit-tap-highlight-color: transparent;
+  margin: 1em 0;
+}
+
+.mermaid svg {
+  max-width: 50%;
+}
+
+@media (max-width: 700px) {
+  .mermaid svg {
+    min-width: 60%;
+  }
+}
+
+@media (max-width: 500px) {
+  .mermaid svg {
+    min-width: 70%;
+  }
+}
+
+@media (max-width: 400px) {
+  .mermaid svg {
+    min-width: 80%;
+  }
 }

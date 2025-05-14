@@ -91,6 +91,7 @@ def hello_world():
 
 ## 7. 表格
 使用`|`和`-`创建表格：
+
 | 序号 | 名称  | 描述  |
 | ---- | ----- | ----- |
 | 1    | 项目1 | 描述1 |
@@ -119,3 +120,84 @@ $$\int_{-\infty}^\infty e^{-x^2} dx = \sqrt{\pi}$$
 - [x] 任务1
 - [ ] 任务2
 - [ ] 任务3
+
+## 12. 图表
+
+### 流程图
+
+```mermaid
+graph TD
+   A[开始] --> B[输入用户名和密码]
+   B --> C{验证通过?}
+   C -->|是| D[登录成功]
+   C -->|否| E[显示错误信息]
+   D --> F[进入系统主页]
+   E --> B
+```
+
+### 时序图
+
+```mermaid
+sequenceDiagram
+    participant User
+    participant Server
+    User->>Server: 发送请求
+    Server-->>User: 返回响应
+```
+
+
+### 状态图
+
+```mermaid
+stateDiagram-v2
+    [*] --> Idle
+    Idle --> Active: 用户操作
+    Active --> Idle: 操作完成
+```
+
+
+### 思维导图
+
+```mermaid
+mindmap
+    root((中心主题))
+        一级分支1
+            子分支1
+            子分支2
+        一级分支2
+            子分支A
+            子分支B
+```
+
+### 甘特图
+
+```mermaid
+gantt
+    title 项目进度
+    dateFormat  YYYY-MM-DD
+    section 阶段一
+    任务1       :done, 2025-01-01, 7d
+    任务2       :active, 2025-01-08, 5d
+```
+
+### 四象限图
+
+```mermaid
+quadrantChart
+    title 技术评估
+    x-axis Low Latency, High Latency
+    y-axis Easy, Hard
+    quadrant-1 We
+    quadrant-2 Work
+    quadrant-3 Could
+    quadrant-4 Be
+```
+
+### 时间轴
+
+```mermaid
+timeline
+    title 时间轴
+    2025 Q1 : 项目立项
+    2025 Q2 : 开发阶段
+```
