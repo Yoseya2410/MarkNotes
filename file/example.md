@@ -254,3 +254,246 @@ $\mathtt{Y}=$ mary
 则系统会回答：no。  
 
 从上述程序的运行过程来看，PROLOG程序的执行过程是一个(归结)演绎推理过程。其推理方式为反向推理，控制策略是深度优先且有回溯机制，具体实现方法是：自上而下匹配子句；从左向右选择子目标；(归结后)产生的新子目标总是插入被消去的目标处（即目标队列的左部)。PROLOG 的这种归结演绎方法被称为 SLD(Linear resolutionwith Selection function for Definite clause)归结，或 SLD 反驳-消解法。这样,SLD 归结就是PROLOG程序的运行机理，它也就是所谓的PROLOG语言的过程性语义。  
+
+
+``` html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>账单仪表盘</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        :root {
+            --bg-color: #ffffff;
+            --text-color: #333333;
+            --grid-color: #eeeeee;
+            --card-bg: #ffffff;
+        }
+
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --bg-color: #1a1a1a;
+                --text-color: #ffffff;
+                --grid-color: #404040;
+                --card-bg: #2d2d2d;
+            }
+        }
+
+        body {
+            margin: 0;
+            padding: 10px;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+        }
+
+        .dashboard {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 15px;
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        .chart-card {
+            position: relative;
+            background-color: var(--card-bg);
+            border-radius: 12px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+
+        .chart-title {
+            font-size: 16px;
+            font-weight: bold;
+            padding: 15px 15px 0 15px;
+            margin: 0;
+            text-align: center;
+        }
+
+        .chart-wrapper {
+            position: relative;
+            height: 280px;
+            padding: 0 10px 10px 10px;
+            width: calc(100% - 20px);
+        }
+
+        @media (min-width: 768px) {
+            .dashboard {
+                grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            }
+            
+            .chart-wrapper {
+                height: 320px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="dashboard">
+        <div class="chart-card">
+            <div class="chart-title">月度支出趋势</div>
+            <div class="chart-wrapper">
+                <canvas id="barChart"></canvas>
+            </div>
+        </div>
+        <div class="chart-card">
+            <div class="chart-title">支出分类比例</div>
+            <div class="chart-wrapper">
+                <canvas id="pieChart"></canvas>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 模拟数据生成
+        const generateDates = () => {
+            return Array.from({length: 30}, (_, i) => `${i + 1}日`);
+        };
+
+        const generateBarData = () => {
+            return Array.from({length: 30}, () => Math.floor(Math.random() * 1000));
+        };
+
+        const generatePieData = () => {
+            const categories = ['餐饮', '购物', '交通', '娱乐', '住房', '医疗'];
+            return categories.map(() => Math.floor(Math.random() * 2000));
+        };
+
+        // 图表配置
+        let barChart, pieChart;
+        const isDarkMode = () => window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+
+        const getChartColors = () => ({
+            bg: isDarkMode() ? 'rgba(255, 255, 255, 0.1)' : 'rgba(0, 0, 0, 0.1)',
+            border: isDarkMode() ? '#ffffff' : '#666666',
+            text: isDarkMode() ? '#ffffff' : '#333333',
+            grid: isDarkMode() ? '#404040' : '#eeeeee'
+        });
+
+        const initCharts = () => {
+            const colors = getChartColors();
+
+            // 销毁旧图表
+            if (barChart) barChart.destroy();
+            if (pieChart) pieChart.destroy();
+
+            // 柱状图 - 不显示具体数值
+            barChart = new Chart(document.getElementById('barChart'), {
+                type: 'bar',
+                data: {
+                    labels: generateDates(),
+                    datasets: [{
+                        label: '支出趋势',
+                        data: generateBarData(),
+                        backgroundColor: colors.bg,
+                        borderColor: colors.border,
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    layout: {
+                        padding: {
+                            top: 10,
+                            right: 10,
+                            bottom: 10,
+                            left: 10
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            grid: { 
+                                color: colors.grid,
+                                drawBorder: false
+                            },
+                            ticks: { 
+                                display: false
+                            }
+                        },
+                        x: {
+                            grid: { 
+                                display: false,
+                                drawBorder: false
+                            },
+                            ticks: { 
+                                color: colors.text,
+                                maxRotation: 45,
+                                minRotation: 45,
+                                font: {
+                                    size: window.innerWidth < 768 ? 8 : 10
+                                }
+                            }
+                        }
+                    },
+                    plugins: {
+                        legend: {
+                            display: false
+                        },
+                        tooltip: {
+                            enabled: false
+                        }
+                    }
+                }
+            });
+
+            // 饼图
+            pieChart = new Chart(document.getElementById('pieChart'), {
+                type: 'pie',
+                data: {
+                    labels: ['餐饮', '购物', '交通', '娱乐', '住房', '医疗'],
+                    datasets: [{
+                        data: generatePieData(),
+                        backgroundColor: [
+                            '#FF6384', '#36A2EB', '#FFCE56', 
+                            '#4BC0C0', '#9966FF', '#FF9F40'
+                        ],
+                        borderColor: colors.grid,
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    layout: {
+                        padding: {
+                            top: 10,
+                            right: 10,
+                            bottom: 10,
+                            left: 10
+                        }
+                    },
+                    plugins: {
+                        legend: {
+                            position: window.innerWidth < 768 ? 'bottom' : 'right',
+                            labels: { 
+                                color: colors.text,
+                                font: {
+                                    size: window.innerWidth < 768 ? 10 : 12
+                                },
+                                padding: 10
+                            }
+                        }
+                    }
+                }
+            });
+        };
+
+        // 监听系统主题变化
+        const darkModeMediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
+        darkModeMediaQuery.addEventListener('change', initCharts);
+
+        // 初始化
+        document.addEventListener('DOMContentLoaded', initCharts);
+        window.addEventListener('resize', () => {
+            barChart.resize();
+            pieChart.resize();
+        });
+    </script>
+</body>
+</html>
+```
